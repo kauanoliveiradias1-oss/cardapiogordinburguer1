@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo | Gordin Burguer</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%99%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ===================== TELA DE LOGIN ===================== -->
+<div class="admin-login" id="telaLogin">
+  <form class="admin-login__caixa" id="formLogin">
+    <span class="admin-login__icone">🔥</span>
+    <h1>Painel Gordin Burguer</h1>
+    <p>Digite usuário e senha para gerenciar o cardápio.</p>
+    <input type="text" id="campoUsuario" placeholder="Usuário" autocomplete="username" required>
+    <input type="password" id="campoSenha" placeholder="Senha do painel" autocomplete="current-password" required>
+    <p class="admin-login__erro" id="erroLogin" hidden>Usuário ou senha incorretos. Tente novamente.</p>
+    <button type="submit" class="botao botao--laranja botao--bloco">Entrar</button>
+    <a href="index.html" class="admin-login__voltar">← Voltar para o cardápio</a>
+  </form>
+</div>
+
+<!-- ===================== PAINEL (após login) ===================== -->
+<div class="admin" id="painelAdmin" hidden>
+
+  <header class="admin-header">
+    <div class="admin-header__marca">
+      <span>🔥</span>
+      <div>
+        <strong>Gordin Burguer</strong>
+        <small>Painel administrativo</small>
+      </div>
+    </div>
+    <div class="admin-header__acoes">
+      <a href="index.html" target="_blank" class="admin-btn admin-btn--fantasma">Ver cardápio ↗</a>
+      <button id="btnSair" class="admin-btn admin-btn--fantasma">Sair</button>
+    </div>
+  </header>
+
+  <nav class="admin-abas">
+    <button class="admin-aba ativa" data-aba="produtos">Produtos</button>
+    <button class="admin-aba" data-aba="categorias">Categorias</button>
+    <button class="admin-aba" data-aba="backup">Backup</button>
+  </nav>
+
+  <main class="admin-main">
+
+    <!-- ---------- ABA: PRODUTOS ---------- -->
+    <section class="admin-secao ativa" id="abaProdutos">
+
+      <div class="admin-toolbar">
+        <input type="text" id="filtroProdutos" placeholder="🔍 Buscar produto por nome...">
+        <select id="filtroCategoria">
+          <option value="">Todas as categorias</option>
+        </select>
+        <button id="btnNovoProduto" class="admin-btn admin-btn--laranja">+ Novo produto</button>
+      </div>
+
+      <p class="admin-contagem" id="contagemProdutos"></p>
+
+      <div class="admin-lista" id="listaProdutosAdmin"></div>
+    </section>
+
+    <!-- ---------- ABA: CATEGORIAS ---------- -->
+    <section class="admin-secao" id="abaCategorias">
+      <div class="admin-card">
+        <h2>Categorias do cardápio</h2>
+        <p class="admin-legenda">A ordem abaixo define a ordem de exibição no site. Categorias com produtos não podem ser removidas — oculte ou mova os produtos antes.</p>
+
+        <form id="formNovaCategoria" class="admin-linha-form">
+          <input type="text" id="campoNovaCategoria" placeholder="Nome da nova categoria (ex: Combos)" required>
+          <button type="submit" class="admin-btn admin-btn--laranja">Adicionar</button>
+        </form>
+
+        <ul class="admin-lista-categorias" id="listaCategoriasAdmin"></ul>
+      </div>
+    </section>
+
+    <!-- ---------- ABA: BACKUP ---------- -->
+    <section class="admin-secao" id="abaBackup">
+      <div class="admin-card">
+        <h2>Exportar cardápio</h2>
+        <p class="admin-legenda">Baixe um arquivo .json com todos os produtos e categorias atuais. Guarde este arquivo como backup.</p>
+        <button id="btnExportar" class="admin-btn admin-btn--laranja">⬇ Exportar backup (.json)</button>
+      </div>
+
+      <div class="admin-card">
+        <h2>Importar cardápio</h2>
+        <p class="admin-legenda">Selecione um arquivo .json exportado anteriormente para restaurar o cardápio. Isso substitui os dados atuais salvos neste navegador.</p>
+        <input type="file" id="campoImportar" accept="application/json">
+        <p class="admin-aviso" id="avisoImportar" hidden></p>
+      </div>
+
+      <div class="admin-card">
+        <h2>Restaurar cardápio padrão</h2>
+        <p class="admin-legenda">Apaga tudo que foi salvo neste navegador e volta o cardápio para os produtos de exemplo iniciais.</p>
+        <button id="btnResetar" class="admin-btn admin-btn--perigo">Restaurar padrão de fábrica</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===================== MODAL: FORMULÁRIO DE PRODUTO ===================== -->
+<div class="modal-fundo" id="modalFormFundo">
+  <div class="modal admin-modal" role="dialog" aria-modal="true">
+    <button class="modal__fechar" id="fecharFormProduto" aria-label="Fechar">✕</button>
+    <div class="modal__conteudo">
+      <h3 id="tituloFormProduto">Novo produto</h3>
+
+      <form id="formProduto" class="admin-form">
+        <label>Categoria
+          <select id="fCategoria" required></select>
+        </label>
+
+        <label>Nome do produto
+          <input type="text" id="fNome" required placeholder="Ex: Gordin Clássico">
+        </label>
+
+        <label>Descrição curta (aparece no card)
+          <textarea id="fDescricao" rows="2" required placeholder="Ex: Pão brioche, Angus, mussarela e maionese da casa."></textarea>
+        </label>
+
+        <label>Ingredientes (separe por vírgula)
+          <input type="text" id="fIngredientes" placeholder="Ex: Pão brioche, Hambúrguer Angus, Mussarela">
+        </label>
+
+        <div class="admin-form__linha">
+          <label>Preço (R$)
+            <input type="number" id="fPreco" min="0" step="0.01" required placeholder="19.90">
+          </label>
+          <label>Preço antigo — opcional
+            <input type="number" id="fPrecoAntigo" min="0" step="0.01" placeholder="Deixe vazio se não houver">
+          </label>
+        </div>
+
+        <label>URL da foto
+          <input type="text" id="fImagem" placeholder="img/produto.jpg ou https://...">
+        </label>
+        <p class="admin-dica">Cole o link de uma imagem já hospedada (ex: Imgur, Drive público) ou coloque o arquivo na pasta /img e escreva o caminho, ex: <code>img/classico.jpg</code>. Também é possível enviar um arquivo do computador abaixo.</p>
+        <label>Ou enviar foto do computador
+          <input type="file" id="fImagemArquivo" accept="image/*">
+        </label>
+        <img id="fPreviaImagem" class="admin-previa-imagem" hidden alt="Prévia da imagem">
+
+        <div class="admin-form__selos">
+          <label class="admin-checkbox"><input type="checkbox" id="fMaisVendido"> Mais Pedido</label>
+          <label class="admin-checkbox"><input type="checkbox" id="fNovidade"> Novidade</label>
+          <label class="admin-checkbox"><input type="checkbox" id="fPromocao"> Promoção</label>
+          <label class="admin-checkbox"><input type="checkbox" id="fVisivel" checked> Visível no site</label>
+        </div>
+
+        <div class="admin-form__acoes">
+          <button type="button" id="btnCancelarForm" class="admin-btn admin-btn--fantasma">Cancelar</button>
+          <button type="submit" class="admin-btn admin-btn--laranja">Salvar produto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="dados.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+/* ============================================================
+   GORDIN BURGUER — admin.css
+   Estilos exclusivos do painel administrativo. Reaproveita as
+   variáveis (cores, fontes) definidas em style.css.
+   ============================================================ */
+
+.admin-body{ background: var(--bg); min-height: 100vh; }
+
+/* ---------- Tela de login ---------- */
+.admin-login{
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: radial-gradient(circle at 30% 20%, rgba(255,107,0,.14), transparent 55%), var(--bg);
+}
+.admin-login__caixa{
+  background: var(--card); border: 1px solid var(--linha); border-radius: var(--raio);
+  padding: 36px 28px; width: 100%; max-width: 360px; text-align: center;
+  box-shadow: var(--sombra-forte); animation: apareceSuave .5s ease both;
+}
+.admin-login__icone{ font-size: 34px; }
+.admin-login__caixa h1{ font-family: var(--fonte-display); font-size: 26px; margin: 10px 0 4px; letter-spacing: .5px; }
+.admin-login__caixa p{ color: var(--texto-suave); font-size: 13.5px; margin-bottom: 20px; }
+.admin-login__caixa input{
+  width: 100%; padding: 13px 16px; border-radius: 10px; border: 1px solid var(--linha);
+  background: var(--card-alt); color: var(--texto); font-size: 14px; margin-bottom: 14px;
+}
+.admin-login__erro{ color: #ff7676; font-size: 13px; margin: -6px 0 12px; }
+.admin-login__voltar{ display: inline-block; margin-top: 16px; font-size: 13px; color: var(--texto-fraco); }
+.admin-login__voltar:hover{ color: var(--accent); }
+
+/* ---------- Botões genéricos do admin ---------- */
+.admin-btn{
+  border: 1px solid var(--linha); background: var(--card-alt); color: var(--texto);
+  padding: 10px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 600;
+  transition: var(--transicao); white-space: nowrap;
+}
+.admin-btn:hover{ border-color: var(--accent); transform: translateY(-1px); }
+.admin-btn--laranja{ background: var(--accent); border-color: var(--accent); color: #1a0d00; }
+.admin-btn--laranja:hover{ filter: brightness(1.08); }
+.admin-btn--fantasma{ background: transparent; }
+.admin-btn--perigo{ background: transparent; border-color: #7a2323; color: #ff8080; }
+.admin-btn--perigo:hover{ background: rgba(255,80,80,.1); border-color: #ff5050; }
+.botao--laranja{ background: var(--accent); color: #1a0d00; }
+.botao--laranja:hover{ filter: brightness(1.08); box-shadow: 0 8px 22px rgba(255,107,0,.35); transform: translateY(-2px); }
+
+/* ---------- Estrutura do painel ---------- */
+.admin{ max-width: 1100px; margin: 0 auto; padding-bottom: 60px; }
+.admin-header{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px; border-bottom: 1px solid var(--linha); position: sticky; top: 0; z-index: 20;
+  background: rgba(17,17,17,.92); backdrop-filter: blur(8px);
+}
+.admin-header__marca{ display: flex; align-items: center; gap: 10px; }
+.admin-header__marca span{ font-size: 22px; }
+.admin-header__marca strong{ display: block; font-size: 15px; }
+.admin-header__marca small{ color: var(--texto-fraco); font-size: 11.5px; }
+.admin-header__acoes{ display: flex; gap: 10px; }
+
+.admin-abas{ display: flex; gap: 8px; padding: 16px 18px 0; }
+.admin-aba{
+  background: none; border: none; color: var(--texto-fraco); font-weight: 700; font-size: 13.5px;
+  padding: 10px 4px; border-bottom: 2px solid transparent;
+}
+.admin-aba.ativa{ color: var(--accent); border-color: var(--accent); }
+.admin-aba:hover{ color: var(--texto); }
+
+.admin-main{ padding: 20px 18px 40px; }
+.admin-secao{ display: none; animation: apareceSuave .35s ease both; }
+.admin-secao.ativa{ display: block; }
+
+/* ---------- Toolbar de produtos ---------- */
+.admin-toolbar{ display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+.admin-toolbar input[type="text"],
+.admin-toolbar select{
+  background: var(--card); border: 1px solid var(--linha); color: var(--texto);
+  padding: 10px 14px; border-radius: 10px; font-size: 13.5px; flex: 1; min-width: 160px;
+}
+.admin-contagem{ color: var(--texto-fraco); font-size: 12.5px; margin: 10px 0 14px; }
+
+/* ---------- Lista de produtos (admin) ---------- */
+.admin-lista{ display: flex; flex-direction: column; gap: 10px; }
+.admin-item{
+  display: flex; align-items: center; gap: 14px;
+  background: var(--card); border: 1px solid var(--linha); border-radius: 12px; padding: 10px;
+}
+.admin-item.oculto{ opacity: .5; }
+.admin-item__img{ width: 58px; height: 58px; border-radius: 8px; object-fit: cover; background: #0d0d0d; flex-shrink: 0; }
+.admin-item__info{ flex: 1; min-width: 0; }
+.admin-item__nome{ font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.admin-item__meta{ color: var(--texto-fraco); font-size: 12px; margin-top: 2px; }
+.admin-tag{ font-size: 9.5px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; letter-spacing: .3px; }
+.admin-tag--vendido{ background: rgba(255,107,0,.18); color: var(--accent); }
+.admin-tag--novidade{ background: rgba(255,255,255,.14); color: #fff; }
+.admin-tag--promo{ background: rgba(234,29,44,.18); color: #ff6b6b; }
+.admin-tag--oculto{ background: rgba(255,255,255,.08); color: var(--texto-fraco); }
+.admin-item__preco{ font-family: var(--fonte-display); color: var(--accent); font-size: 17px; white-space: nowrap; }
+.admin-item__acoes{ display: flex; gap: 6px; flex-shrink: 0; }
+.admin-icon-btn{
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--linha); background: var(--card-alt);
+  color: var(--texto-suave); font-size: 14px; display: flex; align-items: center; justify-content: center;
+  transition: var(--transicao);
+}
+.admin-icon-btn:hover{ border-color: var(--accent); color: var(--accent); }
+
+/* ---------- Cards genéricos (categorias / backup) ---------- */
+.admin-card{ background: var(--card); border: 1px solid var(--linha); border-radius: 14px; padding: 22px; margin-bottom: 16px; }
+.admin-card h2{ font-family: var(--fonte-corpo); font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.admin-legenda{ color: var(--texto-suave); font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
+
+.admin-linha-form{ display: flex; gap: 10px; margin-bottom: 18px; }
+.admin-linha-form input{ flex: 1; background: var(--card-alt); border: 1px solid var(--linha); color: var(--texto); padding: 11px 14px; border-radius: 10px; font-size: 13.5px; }
+
+.admin-lista-categorias{ display: flex; flex-direction: column; gap: 8px; }
+.admin-lista-categorias li{
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--card-alt); border: 1px solid var(--linha); border-radius: 10px; padding: 10px 14px; font-size: 13.5px;
+}
+.admin-lista-categorias .qtd{ color: var(--texto-fraco); font-size: 12px; margin-left: 8px; }
+
+.admin-aviso{ font-size: 13px; margin-top: 10px; padding: 10px 12px; border-radius: 8px; }
+.admin-aviso--ok{ background: rgba(37,211,102,.12); color: #4fe28a; }
+.admin-aviso--erro{ background: rgba(255,80,80,.12); color: #ff7676; }
+
+/* ---------- Modal / formulário de produto ---------- */
+.admin-modal{ max-width: 560px; }
+.admin-modal h3{ font-family: var(--fonte-corpo); font-size: 19px; font-weight: 800; margin-bottom: 18px; }
+.admin-form{ display: flex; flex-direction: column; gap: 14px; }
+.admin-form label{ display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--texto-suave); font-weight: 600; }
+.admin-form input, .admin-form select, .admin-form textarea{
+  background: var(--card-alt); border: 1px solid var(--linha); color: var(--texto);
+  padding: 11px 14px; border-radius: 10px; font-size: 14px; font-family: var(--fonte-corpo); resize: vertical;
+}
+.admin-form__linha{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.admin-dica{ font-size: 12px; color: var(--texto-fraco); margin-top: -8px; }
+.admin-dica code{ background: var(--card-alt); padding: 1px 5px; border-radius: 4px; }
+.admin-previa-imagem{ width: 100%; max-height: 160px; object-fit: cover; border-radius: 10px; border: 1px solid var(--linha); }
+.admin-form__selos{ display: flex; flex-wrap: wrap; gap: 14px; padding: 12px 0; border-top: 1px dashed var(--linha); border-bottom: 1px dashed var(--linha); }
+.admin-checkbox{ flex-direction: row !important; align-items: center; gap: 7px !important; font-size: 13px; color: var(--texto) !important; }
+.admin-checkbox input{ width: 16px; height: 16px; accent-color: var(--accent); }
+.admin-form__acoes{ display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+@media (max-width: 640px){
+  .admin-form__linha{ grid-template-columns: 1fr; }
+  .admin-item{ flex-wrap: wrap; }
+  .admin-item__acoes{ width: 100%; justify-content: flex-end; }
+}

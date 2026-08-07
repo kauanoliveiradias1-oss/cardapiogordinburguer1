@@ -1,0 +1,71 @@
+GORDIN BURGUER — CARDÁPIO DIGITAL
+==================================
+
+ARQUIVOS DO PROJETO
+--------------------
+index.html   -> a página do cardápio (a que vai no QR Code / link)
+admin.html   -> o painel administrativo (uso interno, não divulgar)
+style.css    -> visual do cardápio
+admin.css    -> visual do painel administrativo
+dados.js     -> ÚNICA fonte dos produtos, categorias e configurações
+script.js    -> funcionamento do cardápio (busca, modal, animações etc.)
+admin.js     -> funcionamento do painel administrativo
+/img         -> pasta onde ficam as fotos dos produtos
+
+ANTES DE PUBLICAR — 3 AJUSTES RÁPIDOS EM "dados.js"
+-----------------------------------------------------
+Abra o arquivo dados.js em qualquer editor de texto e ajuste o
+bloco CONFIG no topo do arquivo:
+
+  whatsapp:   coloque o número real, só números, formato 55DDDNUMERO
+  ifoodUrl:   coloque o link da sua loja no iFood
+  senhaAdmin: troque para uma senha só sua (protege o admin.html)
+
+O rodapé do site (endereço, horário de funcionamento e Instagram)
+fica escrito diretamente dentro do index.html, na seção <footer>
+— procure por "Horário de funcionamento" e "Endereço" no arquivo
+e edite o texto normalmente.
+
+COMO ADICIONAR FOTOS DOS PRODUTOS
+-----------------------------------
+Coloque os arquivos de imagem dentro da pasta /img com o mesmo
+nome que está escrito no campo "imagem" de cada produto (você
+pode ver e alterar esse caminho no painel admin, aba Produtos).
+Enquanto não houver uma foto real, o site mostra automaticamente
+uma imagem de reserva com o emoji da categoria — o layout nunca
+quebra por falta de foto.
+
+COMO ATUALIZAR O CARDÁPIO (2 formas)
+---------------------------------------
+1) PELO PAINEL (recomendado): abra admin.html, digite a senha
+   definida em CONFIG.senhaAdmin e use os botões para adicionar,
+   editar, ocultar/mostrar produtos, marcar selos (Mais Pedido,
+   Novidade, Promoção) e criar categorias novas. Tudo é salvo
+   automaticamente no navegador (localStorage).
+
+2) MANUALMENTE: edite o array PRODUTOS_PADRAO dentro de dados.js,
+   copiando um produto existente e alterando os dados. Isso é
+   útil para carregar o catálogo inicial ou fazer alterações em
+   lote antes da primeira publicação.
+
+BACKUP DO CARDÁPIO
+--------------------
+Na aba "Backup" do painel admin você pode:
+ - Exportar um arquivo .json com todo o cardápio atual
+ - Importar esse arquivo depois, em qualquer computador/navegador
+ - Restaurar o cardápio de exemplo original, se precisar
+
+IMPORTANTE: os dados salvos pelo painel ficam no localStorage do
+NAVEGADOR usado para editar. Se você limpar os dados do navegador,
+usar outro navegador ou outro computador, use o backup (.json)
+para levar o cardápio junto.
+
+COMO PUBLICAR
+---------------
+Este é um site 100% estático (HTML, CSS e JavaScript puro). Basta
+subir a pasta inteira em qualquer serviço de hospedagem (Hostinger,
+Vercel, Netlify, GitHub Pages etc.) ou em um servidor próprio.
+Depois, gere o QR Code apontando para o endereço do index.html.
+
+Qualquer dúvida, os arquivos estão comentados em português para
+facilitar futuras alterações.

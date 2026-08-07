@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Gordin Burguer | Hambúrgueres Artesanais na Brasa</title>
+<meta name="description" content="Cardápio digital do Gordin Burguer - Hambúrgueres Angus na brasa, espetinhos, porções, caldos, bebidas e sobremesas.">
+<meta name="theme-color" content="#111111">
+
+<!-- Ícone (SVG inline em base64 simples de chama, pode ser trocado por favicon.ico depois) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
+
+<!-- Fontes: Bebas Neue (títulos, estilo churrascaria/hamburgueria) + Inter (texto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header" id="topo">
+  <div class="header__inner">
+    <div class="logo">
+      <span class="logo__brasa">🔥</span>
+      <div class="logo__texto">
+        <span class="logo__nome">GORDIN</span>
+        <span class="logo__sub">BURGUER &amp; BAR</span>
+      </div>
+    </div>
+    <a href="https://www.google.com/maps/place/Av.+Jos%C3%A9+do+Patroc%C3%ADnio,+345+-+Marta+Helena,+Uberl%C3%A2ndia+-+MG,+38402-290/@-18.8794714,-48.2703389,17z/data=!3m1!4b1!4m6!3m5!1s0x94a445d87475a3dd:0x324a887dc50d266b!8m2!3d-18.8794765!4d-48.2677586!16s%2Fg%2F11csc14f2j?entry=ttu&g_ep=EgoyMDI2MDgwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="header__contato" aria-label="Abrir no Google Maps">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.58 7-13A7 7 0 0 0 5 9c0 5.42 7 13 7 13Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span>Onde estamos</span>
+    </a>
+    <a href="admin.html" class="header__contato" aria-label="Acessar painel admin">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>Admin</span>
+    </a>
+    <button id="botaoCarrinho" class="header__carrinho" aria-label="Abrir carrinho">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-12L4 4H2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="20" r="1.5" fill="currentColor"/><circle cx="18" cy="20" r="1.5" fill="currentColor"/></svg>
+      <span id="carrinhoContador" class="header__carrinho-contador">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== HERO / BANNER ===================== -->
+<section class="hero">
+  <div class="hero__brasas" aria-hidden="true"></div>
+  <div class="hero__conteudo">
+    <p class="hero__eyebrow">Direto da churrasqueira</p>
+    <h1 class="hero__titulo">Hambúrgueres Artesanais<br>na Brasa</h1>
+    <p class="hero__texto">Hambúrgueres Angus preparados na churrasqueira com ingredientes selecionados.</p>
+  </div>
+
+  <!-- Barra de busca flutuante, sobrepondo a base do banner -->
+  <div class="busca-flutuante">
+    <div class="busca">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input type="text" id="campoBusca" placeholder="Buscar no cardápio... ex: bacon, chopp, brownie" autocomplete="off">
+      <button id="limparBusca" class="busca__limpar" aria-label="Limpar busca" hidden>✕</button>
+    </div>
+    <p id="buscaResultado" class="busca__resultado" hidden></p>
+  </div>
+</section>
+
+<div class="divisor-grelha" aria-hidden="true"></div>
+
+<!-- ===================== PROMOÇÃO DA SEMANA ===================== -->
+<section class="secao secao--promo" id="promocoes">
+  <div class="secao__cabecalho">
+    <h2 class="secao__titulo"><span class="chama">🔥</span> Promoção da Semana</h2>
+  </div>
+  <div class="carrossel" id="listaPromocoes"></div>
+</section>
+
+<!-- ===================== MAIS VENDIDOS ===================== -->
+<section class="secao" id="mais-vendidos">
+  <div class="secao__cabecalho">
+    <h2 class="secao__titulo">Os Queridinhos da Casa</h2>
+    <p class="secao__legenda">Mais pedidos, novidades e destaques do cardápio</p>
+  </div>
+  <div class="carrossel" id="listaDestaques"></div>
+</section>
+
+<div class="divisor-grelha" aria-hidden="true"></div>
+
+<!-- ===================== CATEGORIAS (chips estilo iFood) ===================== -->
+<nav class="categorias-nav" id="categoriasNav" aria-label="Categorias do cardápio">
+  <div class="categorias-nav__inner" id="categoriasChips"></div>
+</nav>
+
+<!-- ===================== PRODUTOS POR CATEGORIA ===================== -->
+<main id="produtosContainer" class="produtos-container">
+  <!-- Preenchido dinamicamente pelo script.js -->
+  <p class="carregando">Preparando a brasa... 🔥</p>
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="footer" id="contato">
+  <div class="footer__grelha-topo" aria-hidden="true"></div>
+  <div class="footer__inner">
+
+    <div class="footer__bloco footer__marca">
+      <div class="logo logo--footer">
+        <span class="logo__brasa">🔥</span>
+        <div class="logo__texto">
+          <span class="logo__nome">GORDIN</span>
+          <span class="logo__sub">BURGUER &amp; BAR</span>
+        </div>
+      </div>
+      <p class="footer__frase">Hambúrgueres Angus na brasa, bem servidos, do jeito que a casa gosta.</p>
+      <div class="footer__redes">
+        <a href="https://instagram.com/gordinburguer" target="_blank" rel="noopener" aria-label="Instagram" class="footer__icone">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg>
+        </a>
+        <a href="https://wa.me/5534992171517" target="_blank" rel="noopener" aria-label="WhatsApp" class="footer__icone">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-3.8-6.8L20 4l-1.1 3.9A7.96 7.96 0 0 1 20 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 9.3c.3 2.7 2.5 4.9 5.2 5.2.9.1 1.1-.6.9-1.1l-.5-1.1a.7.7 0 0 0-.8-.4l-.9.2a4.6 4.6 0 0 1-2.5-2.5l.2-.9a.7.7 0 0 0-.4-.8l-1.1-.5c-.5-.2-1.2 0-1.1.9Z" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__bloco">
+      <h3 class="footer__titulo">Horário de funcionamento</h3>
+      <ul class="footer__lista">
+        <li><span>Segunda a Sábado</span><span>13:00 - 23:00</span></li>
+        <li><span>Domingo</span><span>09:00 - 21:00</span></li>
+      </ul>
+    </div>
+
+    <div class="footer__bloco">
+      <h3 class="footer__titulo">Endereço</h3>
+      <p class="footer__texto">Avenida José do Patrocínio, 345 - Marta Helena<br>Uberlândia - MG, 38402-290</p>
+      <a href="https://www.google.com/maps/place/Av.+Jos%C3%A9+do+Patroc%C3%ADnio,+345+-+Marta+Helena,+Uberl%C3%A2ndia+-+MG,+38402-290/@-18.8794714,-48.2703389,17z/data=!3m1!4b1!4m6!3m5!1s0x94a445d87475a3dd:0x324a887dc50d266b!8m2!3d-18.8794765!4d-48.2677586!16s%2Fg%2F11csc14f2j?entry=ttu&g_ep=EgoyMDI2MDgwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="footer__link">Ver no mapa →</a>
+    </div>
+
+    <div class="footer__bloco">
+      <h3 class="footer__titulo">Peça o seu</h3>
+      <a href="https://wa.me/5534992171517" target="_blank" rel="noopener" class="botao botao--whatsapp botao--bloco">Pedir pelo WhatsApp</a>
+      <a href="https://www.ifood.com.br" target="_blank" rel="noopener" class="botao botao--ifood botao--bloco">Pedir pelo iFood</a>
+    </div>
+
+  </div>
+  <div class="footer__base">
+    <p>© <span id="anoAtual"></span> Gordin Burguer &amp; Bar. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<!-- ===================== BOTÕES FLUTUANTES ===================== -->
+<div class="flutuantes">
+  <a href="https://www.ifood.com.br" target="_blank" rel="noopener" class="flutuante flutuante--ifood">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10h16M6 6h12M8 14h8M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span>Pedir no iFood</span>
+  </a>
+  <a href="https://wa.me/5534992171517" target="_blank" rel="noopener" class="flutuante flutuante--whatsapp" aria-label="Chamar no WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-3.8-6.8L20 4l-1.1 3.9A7.96 7.96 0 0 1 20 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 9.3c.3 2.7 2.5 4.9 5.2 5.2.9.1 1.1-.6.9-1.1l-.5-1.1a.7.7 0 0 0-.8-.4l-.9.2a4.6 4.6 0 0 1-2.5-2.5l.2-.9a.7.7 0 0 0-.4-.8l-1.1-.5c-.5-.2-1.2 0-1.1.9Z" fill="currentColor"/></svg>
+  </a>
+</div>
+
+<div class="carrinho-fundo" id="carrinhoFundo" hidden>
+  <aside class="carrinho-drawer" id="carrinhoDrawer" role="dialog" aria-modal="true" aria-labelledby="carrinhoTitulo">
+    <div class="carrinho-topo">
+      <div>
+        <h2 id="carrinhoTitulo">Carrinho</h2>
+        <p id="carrinhoContagemResumo" class="carrinho-resumo-texto">0 itens</p>
+      </div>
+      <button class="modal__fechar" id="fecharCarrinho" aria-label="Fechar">✕</button>
+    </div>
+    <div id="carrinhoItens" class="carrinho-itens">
+      <p class="carrinho-vazio">Seu carrinho está vazio.</p>
+    </div>
+    <div class="carrinho-resumo">
+      <div class="carrinho-resumo__linha"><span>Total</span><strong id="carrinhoTotal">R$ 0,00</strong></div>
+      <button id="botaoFinalizarCarrinho" class="botao botao--whatsapp" type="button">Finalizar pedido</button>
+      <button id="botaoLimparCarrinho" class="botao botao--fantasma" type="button">Limpar carrinho</button>
+    </div>
+  </aside>
+</div>
+
+<!-- ===================== MODAL DE PRODUTO ===================== -->
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalNome">
+    <button class="modal__fechar" id="modalFechar" aria-label="Fechar">✕</button>
+    <div class="modal__imagem-wrap">
+      <img class="modal__imagem" id="modalImagem" src="" alt="">
+      <span class="selo modal__selo" id="modalSelo" hidden></span>
+    </div>
+    <div class="modal__conteudo">
+      <p class="modal__categoria" id="modalCategoria"></p>
+      <h3 class="modal__nome" id="modalNome"></h3>
+      <p class="modal__descricao" id="modalDescricao"></p>
+
+      <div class="modal__ingredientes" id="modalIngredientesWrap">
+        <h4>Ingredientes</h4>
+        <div class="pills" id="modalIngredientes"></div>
+      </div>
+
+      <div class="modal__rodape">
+        <div class="modal__preco">
+          <span class="modal__preco-de" id="modalPrecoDe" hidden></span>
+          <span class="modal__preco-por" id="modalPreco"></span>
+        </div>
+        <div class="modal__botoes">
+          <button id="modalAdicionarCarrinho" class="botao botao--carrinho" type="button">Adicionar ao carrinho</button>
+          <a href="#" target="_blank" rel="noopener" id="modalWhatsapp" class="botao botao--whatsapp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-3.8-6.8L20 4l-1.1 3.9A7.96 7.96 0 0 1 20 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            Pedir pelo WhatsApp
+          </a>
+          <a href="#" target="_blank" rel="noopener" id="modalIfood" class="botao botao--ifood">Pedir pelo iFood</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="dados.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

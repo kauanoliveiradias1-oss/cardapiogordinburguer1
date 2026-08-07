@@ -1,0 +1,506 @@
+/* ============================================================
+   GORDIN BURGUER — style.css
+   Cardápio digital. Tema escuro premium inspirado em apps de
+   delivery/steakhouse (iFood, Madero, Outback, BK/Mc App).
+   Sem frameworks. Mobile-first, com breakpoints para desktop.
+   ============================================================ */
+
+/* ---------- 1. TOKENS (design system) ---------- */
+:root{
+  /* cores base — definidas pelo cliente */
+  --bg:            #111111;
+  --card:          #1b1b1b;
+  --card-alt:      #202020;
+  --accent:        #ff6b00;
+  --accent-2:      #ff9142;   /* variação clara do laranja p/ gradientes */
+  --texto:         #ffffff;
+  --texto-suave:   #b9b9b9;   /* "cinza claro" */
+  --texto-fraco:   #7d7d7d;
+  --linha:         #2c2c2c;
+
+  /* cores funcionais das marcas de pedido */
+  --whatsapp:      #25D366;
+  --whatsapp-esc:  #1da851;
+  --ifood:         #ea1d2c;
+  --ifood-esc:     #c9101e;
+
+  /* tipografia */
+  --fonte-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --fonte-corpo:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* layout */
+  --raio:          14px;
+  --raio-sm:       8px;
+  --sombra:        0 10px 30px rgba(0,0,0,.45);
+  --sombra-forte:  0 20px 50px rgba(0,0,0,.6);
+  --header-h:      64px;
+  --nav-h:         56px;
+  --max:           1180px;
+
+  --transicao: .22s cubic-bezier(.4,0,.2,1);
+}
+
+/* ---------- 2. RESET ---------- */
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + var(--nav-h) + 12px); }
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--texto);
+  font-family: var(--fonte-corpo);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+button{ font-family: inherit; cursor: pointer; }
+h1,h2,h3,h4{ margin: 0; font-family: var(--fonte-display); font-weight: 400; letter-spacing: .5px; }
+p{ margin: 0; }
+ul{ list-style: none; margin: 0; padding: 0; }
+::selection{ background: var(--accent); color: #111; }
+
+/* acessibilidade: foco visível */
+a:focus-visible, button:focus-visible, input:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* barra de rolagem fina no tema */
+::-webkit-scrollbar{ height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb{ background: #333; border-radius: 10px; }
+::-webkit-scrollbar-track{ background: transparent; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- 3. UTILITÁRIOS ---------- */
+.carregando{ text-align:center; color: var(--texto-fraco); padding: 60px 20px; font-size: 15px; }
+
+/* Divisor "grelha" — motivo assinatura da marca: barras que lembram
+   as brasas/grelha da churrasqueira, usado entre seções. */
+.divisor-grelha{
+  height: 14px;
+  max-width: var(--max);
+  margin: 0 auto;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0 18px,
+    transparent 18px 34px
+  );
+  opacity: .18;
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+
+/* ---------- 4. HEADER ---------- */
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--header-h);
+  background: rgba(17,17,17,.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linha);
+}
+.header__inner{
+  max-width: var(--max);
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo{ display: flex; align-items: center; gap: 8px; }
+.logo__brasa{ font-size: 22px; filter: drop-shadow(0 0 6px rgba(255,107,0,.6)); }
+.logo__texto{ display: flex; flex-direction: column; line-height: 1; }
+.logo__nome{ font-family: var(--fonte-display); font-size: 22px; letter-spacing: 1.5px; }
+.logo__sub{ font-size: 9px; letter-spacing: 2.5px; color: var(--accent); font-weight: 600; }
+
+.header__contato{
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--texto-suave);
+  padding: 8px 12px; border: 1px solid var(--linha); border-radius: 30px;
+  transition: var(--transicao);
+}
+.header__contato:hover{ border-color: var(--accent); color: var(--texto); }
+
+.header__carrinho{
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; border: 1px solid var(--linha); color: var(--texto);
+  padding: 8px 12px; border-radius: 30px; transition: var(--transicao);
+}
+.header__carrinho:hover{ border-color: var(--accent); color: var(--texto); transform: translateY(-1px); }
+.header__carrinho svg{ width: 18px; height: 18px; }
+.header__carrinho-contador{
+  min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: var(--accent); color: #1a0d00; font-size: 12px; font-weight: 800; padding: 0 7px;
+}
+
+.carrinho-fundo{
+  position: fixed; inset: 0; z-index: 120;
+  background: rgba(0,0,0,.55);
+  display: flex; justify-content: flex-end;
+  visibility: hidden; opacity: 0; transition: opacity var(--transicao), visibility var(--transicao);
+}
+.carrinho-fundo.ativo{ visibility: visible; opacity: 1; }
+.carrinho-drawer{
+  background: var(--card); width: min(420px, 100%); max-width: 420px; height: 100%; padding: 24px;
+  display: flex; flex-direction: column; gap: 20px; box-shadow: var(--sombra);
+}
+.carrinho-topo{ display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.carrinho-topo h2{ font-size: 24px; }
+.carrinho-resumo-texto{ color: var(--texto-suave); font-size: 13px; margin-top: 6px; }
+.carrinho-itens{ flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+.carrinho-vazio{ color: var(--texto-fraco); font-size: 14px; margin-top: 18px; }
+.carrinho-item{ display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--linha); border-radius: var(--raio); background: var(--card-alt); }
+.carrinho-item__info{ display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.carrinho-item__info strong{ font-size: 14px; }
+.carrinho-item__info span{ color: var(--texto-suave); font-size: 13px; }
+.carrinho-item__acoes{ display: flex; flex-wrap: wrap; gap: 8px; }
+.carrinho-btn{ border: 1px solid var(--linha); background: transparent; color: var(--texto); padding: 8px 10px; border-radius: 100px; font-size: 13px; transition: var(--transicao); }
+.carrinho-btn:hover{ background: rgba(255,255,255,.05); }
+.carrinho-btn--remover{ border-color: rgba(234,29,44,.6); color: #ffb0b0; }
+.carrinho-resumo{ display: flex; flex-direction: column; gap: 12px; }
+.carrinho-resumo__linha{ display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--texto); }
+.botao--carrinho{ background: var(--accent); color: #1a0d00; }
+.botao--carrinho:hover{ filter: brightness(1.06); }
+
+/* ---------- 5. HERO / BANNER ---------- */
+.hero{
+  position: relative;
+  padding: 46px 18px 90px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,107,0,.16), transparent 55%),
+    radial-gradient(circle at 85% 30%, rgba(255,107,0,.10), transparent 50%),
+    linear-gradient(180deg, #161616 0%, var(--bg) 70%);
+  text-align: center;
+}
+.hero__brasas{
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: .5;
+  animation: brasaFlutua 18s linear infinite;
+}
+@keyframes brasaFlutua{
+  from{ background-position: 0 0; }
+  to{ background-position: 0 400px; }
+}
+.hero__conteudo{ position: relative; max-width: 640px; margin: 0 auto; animation: apareceSuave .8s ease both; }
+.hero__eyebrow{
+  color: var(--accent); text-transform: uppercase; font-size: 12px;
+  letter-spacing: 3px; font-weight: 700; margin-bottom: 10px;
+}
+.hero__titulo{
+  font-size: clamp(38px, 9vw, 62px);
+  line-height: .95;
+  letter-spacing: 1px;
+  text-shadow: 0 10px 40px rgba(0,0,0,.5);
+}
+.hero__titulo br{ display: block; }
+.hero__texto{
+  margin: 16px auto 0;
+  max-width: 460px;
+  color: var(--texto-suave);
+  font-size: 15.5px;
+}
+
+/* barra de busca — cartão flutuante sobrepondo a base do banner */
+.busca-flutuante{
+  position: relative;
+  max-width: 620px;
+  margin: -46px auto 0;
+  padding: 0 18px;
+  z-index: 5;
+}
+.busca{
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--linha);
+  border-radius: 100px;
+  padding: 14px 18px;
+  box-shadow: var(--sombra-forte);
+}
+.busca svg{ color: var(--texto-fraco); flex-shrink: 0; }
+.busca input{
+  flex: 1; min-width: 0;
+  background: none; border: none; color: var(--texto);
+  font-size: 15px; font-family: var(--fonte-corpo);
+}
+.busca input::placeholder{ color: var(--texto-fraco); }
+.busca input:focus{ outline: none; }
+.busca__limpar{
+  background: var(--linha); color: var(--texto-suave); border: none;
+  width: 24px; height: 24px; border-radius: 50%; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.busca__resultado{
+  text-align: center; font-size: 13px; color: var(--texto-suave); margin-top: 10px;
+}
+
+/* ---------- 6. SEÇÕES GENÉRICAS ---------- */
+.secao{ max-width: var(--max); margin: 0 auto; padding: 40px 18px 8px; }
+.secao__cabecalho{ display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.secao__titulo{ font-size: 26px; letter-spacing: .5px; display: flex; align-items: center; gap: 8px; }
+.secao__legenda{ color: var(--texto-suave); font-size: 13.5px; }
+.chama{ filter: drop-shadow(0 0 8px rgba(255,107,0,.7)); }
+
+/* carrossel horizontal (promoções / destaques) */
+.carrossel{
+  display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 18px;
+  scroll-snap-type: x proximity;
+}
+.carrossel::-webkit-scrollbar{ height: 0; }
+.carrossel .produto-card{ min-width: 235px; scroll-snap-align: start; }
+
+/* ---------- 7. NAV DE CATEGORIAS (chips estilo iFood) ---------- */
+.categorias-nav{
+  position: sticky;
+  top: var(--header-h);
+  z-index: 30;
+  background: rgba(17,17,17,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linha);
+}
+.categorias-nav__inner{
+  max-width: var(--max); margin: 0 auto;
+  display: flex; gap: 10px; overflow-x: auto;
+  padding: 12px 18px;
+}
+.categorias-nav__inner::-webkit-scrollbar{ height: 0; }
+.categoria-chip{
+  flex-shrink: 0;
+  background: var(--card);
+  border: 1px solid var(--linha);
+  color: var(--texto-suave);
+  padding: 9px 18px;
+  border-radius: 100px;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: var(--transicao);
+}
+.categoria-chip:hover{ border-color: var(--accent); color: var(--texto); transform: translateY(-1px); }
+.categoria-chip.ativa{
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a0d00;
+}
+
+/* ---------- 8. GRID DE PRODUTOS ---------- */
+.produtos-container{ max-width: var(--max); margin: 0 auto; padding: 8px 18px 20px; }
+.categoria-secao{ padding-top: 34px; scroll-margin-top: calc(var(--header-h) + var(--nav-h) + 14px); }
+.categoria-secao__titulo{
+  font-size: 24px; margin-bottom: 4px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--linha);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.categoria-secao__titulo span.contagem{
+  font-family: var(--fonte-corpo); font-size: 12px; color: var(--texto-fraco); font-weight: 500;
+}
+.grid-produtos{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+.sem-resultado{ text-align: center; color: var(--texto-fraco); padding: 50px 18px; font-size: 15px; }
+
+/* ---------- 9. CARD DE PRODUTO ---------- */
+.produto-card{
+  background: var(--card);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(18px);
+  transition: transform var(--transicao), border-color var(--transicao), box-shadow var(--transicao);
+}
+.produto-card.em-vista{ animation: apareceSuave .55s ease forwards; }
+.produto-card:hover{ border-color: #3a3a3a; box-shadow: var(--sombra); transform: translateY(-3px); }
+
+.produto-card__imagem-wrap{ position: relative; aspect-ratio: 4 / 3; background: #0d0d0d; overflow: hidden; }
+.produto-card__imagem{ width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.produto-card:hover .produto-card__imagem{ transform: scale(1.06); }
+
+.produto-card__corpo{ padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.produto-card__nome{ font-family: var(--fonte-corpo); font-weight: 700; font-size: 15.5px; }
+.produto-card__desc{
+  color: var(--texto-suave); font-size: 13px; line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-clamp: 2; overflow: hidden;
+  min-height: 36px;
+}
+.produto-card__rodape{ display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; gap: 8px; }
+.produto-card__preco{ font-family: var(--fonte-display); font-size: 20px; color: var(--accent); letter-spacing: .5px; }
+.produto-card__preco-de{
+  display: block; font-family: var(--fonte-corpo); font-size: 11.5px; color: var(--texto-fraco);
+  text-decoration: line-through; font-weight: 500; margin-top: -4px;
+}
+.produto-card__btn{
+  background: transparent; border: 1px solid var(--accent); color: var(--accent);
+  padding: 8px 14px; border-radius: 100px; font-size: 12.5px; font-weight: 700;
+  white-space: nowrap; transition: var(--transicao);
+}
+.produto-card__btn:hover{ background: var(--accent); color: #1a0d00; transform: translateY(-1px); }
+
+/* selo "carimbo de ferro quente" — elemento assinatura da marca */
+.selo{
+  position: absolute; top: 10px; left: 10px;
+  font-family: var(--fonte-corpo); font-weight: 800; font-size: 10px;
+  letter-spacing: .5px; text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1.5px dashed rgba(255,255,255,.55);
+  transform: rotate(-6deg);
+  box-shadow: 0 4px 14px rgba(0,0,0,.4);
+  backdrop-filter: blur(2px);
+}
+.selo--mais-vendido{ background: rgba(255,107,0,.92); color: #1a0d00; }
+.selo--novidade{ background: rgba(255,255,255,.92); color: #111; }
+.selo--promocao{ background: rgba(234,29,44,.92); color: #fff; }
+
+/* ---------- 10. BOTÕES (globais) ---------- */
+.botao{
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 20px; border-radius: 100px; font-weight: 700; font-size: 14px;
+  border: none; transition: transform var(--transicao), box-shadow var(--transicao), filter var(--transicao);
+}
+.botao:active{ transform: scale(.96); }
+.botao--bloco{ width: 100%; margin-top: 10px; }
+.botao--whatsapp{ background: var(--whatsapp); color: #06280f; }
+.botao--whatsapp:hover{ filter: brightness(1.08); box-shadow: 0 8px 22px rgba(37,211,102,.35); transform: translateY(-2px); }
+.botao--ifood{ background: var(--ifood); color: #fff; }
+.botao--ifood:hover{ filter: brightness(1.1); box-shadow: 0 8px 22px rgba(234,29,44,.35); transform: translateY(-2px); }
+
+/* ---------- 11. RODAPÉ ---------- */
+.footer{ margin-top: 50px; background: #0c0c0c; border-top: 1px solid var(--linha); position: relative; }
+.footer__grelha-topo{
+  height: 6px;
+  background-image: repeating-linear-gradient(90deg, var(--accent) 0 16px, transparent 16px 30px);
+  opacity: .35;
+}
+.footer__inner{
+  max-width: var(--max); margin: 0 auto; padding: 44px 18px 24px;
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px;
+}
+.footer__titulo{ font-family: var(--fonte-corpo); font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 14px; font-weight: 700; }
+.footer__frase{ color: var(--texto-suave); font-size: 13.5px; margin: 14px 0 18px; max-width: 260px; }
+.footer__texto{ color: var(--texto-suave); font-size: 13.5px; line-height: 1.7; }
+.footer__link{ display: inline-block; margin-top: 10px; font-size: 13px; color: var(--accent); font-weight: 600; }
+.footer__lista li{ display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; color: var(--texto-suave); padding: 7px 0; border-bottom: 1px dashed var(--linha); }
+.footer__lista li span:last-child{ color: var(--texto); font-weight: 600; }
+.footer__redes{ display: flex; gap: 10px; }
+.footer__icone{
+  width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--linha);
+  display: flex; align-items: center; justify-content: center; color: var(--texto-suave);
+  transition: var(--transicao);
+}
+.footer__icone:hover{ border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.footer__base{ border-top: 1px solid var(--linha); padding: 16px 18px; text-align: center; }
+.footer__base p{ color: var(--texto-fraco); font-size: 12px; }
+
+/* ---------- 12. BOTÕES FLUTUANTES ---------- */
+.flutuantes{
+  position: fixed; right: 18px; bottom: 18px; z-index: 50;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 12px;
+}
+.flutuante{ display: flex; align-items: center; gap: 8px; box-shadow: var(--sombra-forte); transition: var(--transicao); }
+.flutuante--whatsapp{
+  width: 58px; height: 58px; border-radius: 50%; background: var(--whatsapp); color: #06280f;
+  justify-content: center; animation: pulsaWhats 2.6s ease infinite;
+}
+.flutuante--whatsapp:hover{ transform: scale(1.07); animation-play-state: paused; }
+@keyframes pulsaWhats{
+  0%, 100%{ box-shadow: 0 0 0 0 rgba(37,211,102,.45), var(--sombra-forte); }
+  70%{ box-shadow: 0 0 0 12px rgba(37,211,102,0), var(--sombra-forte); }
+}
+.flutuante--ifood{
+  background: var(--ifood); color: #fff; padding: 12px 18px; border-radius: 100px; font-size: 13px; font-weight: 700;
+}
+.flutuante--ifood:hover{ transform: translateY(-2px); filter: brightness(1.08); }
+
+/* ---------- 13. MODAL DE PRODUTO ---------- */
+.modal-fundo{
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+  display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity var(--transicao);
+}
+.modal-fundo.ativo{ opacity: 1; visibility: visible; }
+.modal{
+  background: var(--card);
+  width: 100%; max-width: 480px;
+  max-height: 92vh; overflow-y: auto;
+  border-radius: 22px 22px 0 0;
+  position: relative;
+  transform: translateY(40px);
+  transition: transform var(--transicao);
+  border: 1px solid var(--linha);
+  border-bottom: none;
+}
+.modal-fundo.ativo .modal{ transform: translateY(0); }
+.modal__fechar{
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  width: 34px; height: 34px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,.55); color: #fff; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal__imagem-wrap{ position: relative; aspect-ratio: 16/10; background: #0d0d0d; }
+.modal__imagem{ width: 100%; height: 100%; object-fit: cover; }
+.modal__selo{ position: absolute; top: 14px; left: 14px; }
+.modal__conteudo{ padding: 22px 22px 26px; }
+.modal__categoria{ color: var(--accent); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+.modal__nome{ font-family: var(--fonte-corpo); font-size: 21px; font-weight: 800; margin-top: 6px; }
+.modal__descricao{ color: var(--texto-suave); font-size: 14px; line-height: 1.6; margin-top: 10px; }
+.modal__ingredientes{ margin-top: 18px; }
+.modal__ingredientes h4{ font-family: var(--fonte-corpo); font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--texto-fraco); margin-bottom: 10px; }
+.pills{ display: flex; flex-wrap: wrap; gap: 8px; }
+.pill{ background: var(--card-alt); border: 1px solid var(--linha); color: var(--texto-suave); font-size: 12.5px; padding: 6px 12px; border-radius: 100px; }
+.modal__rodape{ margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--linha); }
+.modal__preco{ margin-bottom: 14px; }
+.modal__preco-de{ display: block; font-size: 13px; color: var(--texto-fraco); text-decoration: line-through; }
+.modal__preco-por{ font-family: var(--fonte-display); font-size: 30px; color: var(--accent); letter-spacing: .5px; }
+.modal__botoes{ display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------- 14. ANIMAÇÕES GLOBAIS ---------- */
+@keyframes apareceSuave{
+  from{ opacity: 0; transform: translateY(16px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+body{ animation: fadeBody .5s ease; }
+@keyframes fadeBody{ from{ opacity: 0; } to{ opacity: 1; } }
+
+/* ---------- 15. RESPONSIVO (desktop) ---------- */
+@media (min-width: 720px){
+  .hero{ padding: 64px 24px 110px; }
+  .footer__inner{ gap: 40px; }
+}
+@media (min-width: 900px){
+  .modal-fundo{ align-items: center; }
+  .modal{ border-radius: 22px; max-height: 88vh; }
+  .modal-fundo.ativo .modal{ transform: translateY(0) scale(1); }
+  .modal{ transform: translateY(0) scale(.96); }
+  .modal__botoes{ flex-direction: row; }
+  .modal__botoes .botao{ flex: 1; }
+}
+@media (max-width: 640px){
+  .footer__inner{ grid-template-columns: 1fr 1fr; }
+  .footer__marca{ grid-column: 1 / -1; }
+  .flutuante--ifood span{ display: none; }
+  .flutuante--ifood{ width: 58px; height: 58px; border-radius: 50%; justify-content: center; padding: 0; }
+
+  /* grade de 2 colunas no celular, no estilo dos apps de delivery */
+  .grid-produtos{ grid-template-columns: 1fr 1fr; gap: 12px; }
+  .produto-card__nome{ font-size: 13.5px; }
+  .produto-card__preco{ font-size: 17px; }
+  .produto-card__desc{ -webkit-line-clamp: 2; line-clamp: 2; font-size: 12px; min-height: 32px; }
+  .produto-card__corpo{ padding: 10px; gap: 4px; }
+  .produto-card__rodape{ flex-direction: column; align-items: flex-start; gap: 8px; }
+  .produto-card__btn{ width: 100%; padding: 8px 10px; font-size: 11.5px; text-align: center; }
+  .carrossel .produto-card{ min-width: 180px; }
+}
